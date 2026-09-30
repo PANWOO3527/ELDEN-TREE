@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="밤통 공략">
+<meta name="theme-color" content="#0d1020">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="apple-touch-icon.png">
+<title>밤통 공략집</title>
+<style>
+:root{
+  --bg:#0d1020; --bg2:#151a30; --card:#1b2140; --line:#2c3460;
+  --text:#e8e6f0; --sub:#a4a8c4; --gold:#d6b25e; --gold2:#f0d68c;
+  --holy:#f3d36b; --fire:#ff7a45; --light:#6cc7ff; --magic:#8f8bff;
+  --poison:#8fd14f; --rot:#e0703c; --bleed:#e5484d; --frost:#9fe3ff;
+  --sleep:#b99cff; --mad:#ffb020; --death:#9aa0a6; --phys:#c9c9c9;
+  --safe-b: env(safe-area-inset-bottom);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  font-size:15px;line-height:1.6}
+body{padding-bottom:calc(72px + var(--safe-b))}
+header{position:sticky;top:0;z-index:10;
+  background:linear-gradient(180deg,#0d1020 70%,rgba(13,16,32,.85));
+  padding:calc(env(safe-area-inset-top) + 12px) 16px 10px;border-bottom:1px solid var(--line)}
+h1{margin:0 0 8px;font-size:19px;letter-spacing:.5px;color:var(--gold2)}
+h1 small{font-size:12px;color:var(--sub);font-weight:400;margin-left:6px}
+#search{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);
+  background:var(--bg2);color:var(--text);font-size:16px;outline:none}
+#search:focus{border-color:var(--gold)}
+main{padding:14px 16px;max-width:760px;margin:0 auto}
+.sec-title{font-size:13px;color:var(--gold);letter-spacing:1px;margin:18px 2px 8px;font-weight:700}
+.sec-title:first-child{margin-top:4px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:10px;overflow:hidden}
+details>summary{list-style:none;cursor:pointer;padding:14px;display:flex;gap:10px;align-items:flex-start}
+details>summary::-webkit-details-marker{display:none}
+.sum-main{flex:1;min-width:0}
+.sum-title{font-weight:700;font-size:16px}
+.sum-sub{font-size:12.5px;color:var(--sub);margin-top:2px}
+.chev{color:var(--sub);transition:transform .2s;margin-top:2px}
+details[open] .chev{transform:rotate(90deg)}
+.body{padding:0 14px 14px;border-top:1px solid var(--line)}
+.body h4{margin:14px 0 6px;font-size:13px;color:var(--gold2)}
+.body ul{margin:4px 0;padding-left:18px}
+.body li{margin:3px 0}
+.body p{margin:6px 0}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.chip{font-size:11.5px;padding:2px 8px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.chip.weak{font-weight:700}
+.chip.res{opacity:.75;border-style:dashed}
+.c-holy{color:var(--holy)}.c-fire{color:var(--fire)}.c-light{color:var(--light)}.c-magic{color:var(--magic)}
+.c-poison{color:var(--poison)}.c-rot{color:var(--rot)}.c-bleed{color:var(--bleed)}.c-frost{color:var(--frost)}
+.c-sleep{color:var(--sleep)}.c-mad{color:var(--mad)}.c-death{color:var(--death)}.c-phys{color:var(--phys)}
+.stars{color:var(--gold);font-size:12px;letter-spacing:1px}
+.tip{background:rgba(214,178,94,.08);border-left:3px solid var(--gold);padding:8px 10px;border-radius:6px;margin:8px 0;font-size:14px}
+.warn{background:rgba(229,72,77,.08);border-left:3px solid var(--bleed);padding:8px 10px;border-radius:6px;margin:8px 0;font-size:14px}
+.nb-list{display:flex;flex-wrap:wrap;gap:6px}
+.nb{font-size:12.5px;background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:3px 8px}
+.nb.only{border-color:var(--gold);color:var(--gold2)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--gold2);font-weight:600;font-size:12.5px}
+.memo{width:100%;min-height:64px;margin-top:6px;background:var(--bg2);color:var(--text);
+  border:1px solid var(--line);border-radius:8px;padding:8px;font-size:15px;font-family:inherit;resize:vertical}
+.memo-label{font-size:12px;color:var(--sub);margin-top:12px}
+.clear-btn{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--sub);background:none;border:1px solid var(--line);
+  border-radius:8px;padding:4px 10px;margin-top:6px}
+.empty{color:var(--sub);text-align:center;padding:30px 0}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;background:#0a0d1a;
+  border-top:1px solid var(--line);padding-bottom:var(--safe-b)}
+nav button{flex:1;background:none;border:none;color:var(--sub);padding:9px 0 8px;font-size:11px;font-family:inherit}
+nav button .ic{display:block;font-size:19px;line-height:1.2;margin-bottom:1px}
+nav button.on{color:var(--gold2)}
+.hidden{display:none!important}
+.foot{color:var(--sub);font-size:11.5px;text-align:center;margin:24px 0 8px;line-height:1.5}
+.check li{list-style:none;margin-left:-18px}
+.check li::before{content:"☐ ";color:var(--gold)}
+mark{background:rgba(214,178,94,.35);color:inherit;border-radius:3px}
+</style>
+</head>
+<body>
+<header>
+  <h1>🌙 밤의 통치자 공략집 <small>본편 기준 · DLC 제외</small></h1>
+  <input id="search" type="search" placeholder="검색: 보스, 속성, 캐릭터… (예: 벼락, 리브라)" autocomplete="off">
+</header>
+
+<main>
+  <section id="tab-guide"></section>
+  <section id="tab-lords" class="hidden"></section>
+  <section id="tab-night" class="hidden"></section>
+  <section id="tab-chars" class="hidden"></section>
+  <section id="tab-status" class="hidden"></section>
+  <section id="tab-items" class="hidden"></section>
+  <div id="search-results" class="hidden"></div>
+  <div class="foot">정보 출처: 나무위키·팬 위키 등 커뮤니티 공략 (2026년 기준)<br>패치로 수치·패턴이 바뀔 수 있어요</div>
+</main>
+
+<nav>
+  <button data-tab="guide" class="on"><span class="ic">📖</span>초보 가이드</button>
+  <button data-tab="lords"><span class="ic">👑</span>밤의 왕</button>
+  <button data-tab="night"><span class="ic">🌑</span>밤 보스</button>
+  <button data-tab="chars"><span class="ic">🗡️</span>캐릭터</button>
+  <button data-tab="items"><span class="ic">🔮</span>유물·템</button>
+  <button data-tab="status"><span class="ic">🧪</span>속성·상태</button>
+</nav>
+
+<script>
+/* ================= 데이터 ================= */
+const EL = {
+  "신성":"holy","화염":"fire","벼락":"light","마력":"magic","독":"poison","붉은 부패":"rot",
+  "출혈":"bleed","동상":"frost","수면":"sleep","발광":"mad","죽음":"death","타격":"phys","참격":"phys","물리":"phys"
+};
+const chip = (t, kind) => {
+  const base = t.replace(/\(.*\)/,'').trim();
+  return `<span class="chip ${kind||''} c-${EL[base]||'phys'}">${kind==='weak'?'약점 ':kind==='res'?'내성 ':''}${t}</span>`;
+};
+
+const GUIDE = [
+ {t:"한 판(출격)의 흐름", s:"3일 구조 한눈에 보기", b:`
+  <ul>
+   <li><b>1일차 낮</b> → 맵을 돌며 파밍·레벨업. 시간이 지나면 <b>밤의 비</b>가 두 번에 걸쳐 좁혀옴</li>
+   <li><b>1일차 밤</b> → 비가 가장 작아지면 <b>밤 보스</b> 등장 (먼저 관련 잡몹 전초전)</li>
+   <li><b>2일차</b> → 같은 흐름 반복. 밤 보스가 1일차보다 강함</li>
+   <li><b>3일차</b> → 파밍 없이 바로 <b>밤의 왕</b>과 결전</li>
+  </ul>
+  <div class="tip">밤의 왕마다 <b>약점 속성</b>이 정해져 있어요. 출격 화면에서 확인할 수 있으니, 1·2일차 내내 "3일차에 들고 갈 약점 무기"를 찾는다고 생각하면 됩니다.</div>`},
+ {t:"1·2일차 우선순위", s:"뭘 먼저 해야 할지 모를 때", b:`
+  <ul>
+   <li><b>교회</b>: 성배병 사용 횟수가 늘어남 → 1일차에 최대한 챙기기</li>
+   <li><b>야영지·폐교회·유적의 강적</b>: 레벨업용 룬 + 무기 드랍</li>
+   <li><b>갱도</b>: 무기 강화용 단석</li>
+   <li><b>두려운 강적(필드 보스)</b>: 보상이 좋지만 강함. 레벨이 어느 정도 오른 뒤 도전</li>
+   <li>밤이 오기 전 <b>은총</b>에서 레벨업 → 비 안쪽으로 이동</li>
+  </ul>
+  <div class="tip">장비 무게 제한이 없어요. 줍는 무기로 칸을 채워두면 손해가 없습니다.</div>`},
+ {t:"룬·레벨 관리", s:"레벨 최대 15", b:`
+  <ul>
+   <li>룬은 <b>레벨업 최우선</b>. 1·2일차에 상점에서 낭비하지 않기</li>
+   <li>3일차 직전(2일차 밤 이후)에 남은 룬으로 상점에서 <b>약점 속성 기름·항아리</b>, 회복 아이템 구매</li>
+   <li>레벨이 높을수록 필요 룬이 급증 → 강적을 적극적으로 잡아야 따라감</li>
+  </ul>`},
+ {t:"죽음과 부활 규칙", s:"빈사 · 사망 · 전멸", b:`
+  <ul>
+   <li>낮에 쓰러지면 <b>빈사 상태</b> → 동료가 공격(때리기)해서 살려줄 수 있음</li>
+   <li>제한 시간 안에 못 살리면 사망: <b>레벨 하락 + 룬 떨어뜨림</b> (죽은 자리에서 회수 가능)</li>
+   <li><b>밤 보스전</b>: 빈사 제한 시간 없음. 대신 <b>전원이 쓰러지면 출격 종료</b></li>
+  </ul>
+  <div class="warn">보스전에서 동료가 쓰러지면, 보스 어그로가 다른 사람에게 있을 때 살리는 게 원칙. 무리한 부활 시도가 연쇄 전멸의 1순위 원인입니다.</div>`},
+ {t:"3일차 결전 전 체크리스트", s:"보스방 들어가기 전에", b:`
+  <ul class="check">
+   <li>밤의 왕 <b>약점 속성 무기</b>를 들었나?</li>
+   <li>약점 속성 <b>기름·항아리</b>를 샀나? (무기가 없을 때 대체재)</li>
+   <li>보스 공격 속성에 맞는 <b>경감률 패시브</b>(예: 풀고르 → 신성 경감)를 챙겼나?</li>
+   <li>성배병 횟수, 회복 아이템은 충분한가?</li>
+   <li>밤의 왕 탭에서 <b>필살기 패턴</b>을 한 번 읽었나?</li>
+  </ul>`},
+ {t:"초보가 자주 하는 실수", s:"이것만 피해도 승률이 오릅니다", b:`
+  <ul>
+   <li>약점 속성 무기 없이 3일차 도전</li>
+   <li>밤의 비 경계 늦게 이동 → 비에 갇혀 체력 손실</li>
+   <li>보스에게 딜 욕심 → "한 대만 더"가 사망 원인</li>
+   <li>혼자 멀리 파밍 → 빈사 시 살려줄 사람 없음</li>
+   <li>밤의 왕 보스전 중 약점 속성 외의 인챈트를 같이 씀 → 약점 기믹이 안 터질 수 있음 (약점 판정은 피격 이펙트 기준)</li>
+  </ul>`},
+];
+
+/* 밤의 왕 */
+const LORDS = [
+ {id:"gladius", exp:"세 목 달린 짐승", name:"밤의 짐승 글라디우스", diff:1,
+  weak:["신성"], res:[], atk:["화염"],
+  feat:["첫 번째로 만나는 밤의 왕 (입문용)","세 마리 늑대로 분열하는 패턴 보유","신성 공격을 일정 이상 넣으면 경감률·공격력이 떨어지는 디버프에 걸림"],
+  prep:["신성 속성 무기 (광역으로 휩쓰는 무기면 분열 패턴 대응이 편함)","화염 경감 패시브"],
+  night1:["아인 여왕 & 아인 검성","방울 사냥꾼"], night2:["끔찍한 흉조","트리 가드 & 도읍 기병"],
+  only:["아인 여왕 & 아인 검성","방울 사냥꾼","끔찍한 흉조"]},
+ {id:"adel", exp:"달려드는 턱", name:"밤의 제후 에델레", diff:3,
+  weak:["독","붉은 부패"], res:["출혈(매우 높음)"], atk:["벼락"],
+  feat:["벼락을 쓰는 용. 돌진을 자주 해서 멀리 떨어지기 쉬움","플레이어를 물어가는 잡기 패턴이 흉악 — 표적이 되면 회피에 집중","출혈 내성이 매우 높아 출혈 무기는 비추천"],
+  prep:["독·부패 무기 또는 독 항아리/기름","벼락 경감 패시브"],
+  night1:["공작의 프레이자","밤의 기병 2기","영웅의 가고일","지렁이 얼굴","탐식의 드래곤"], night2:["고룡","도가니의 기사 & 황금 하마","벽지의 노장"],
+  only:["고룡"]},
+ {id:"gnoster", exp:"지성의 벌레", name:"밤의 지식 그노스터", diff:4,
+  weak:["화염"], res:[], atk:["마력","독"],
+  feat:["공중의 나방과 지상의 전갈, 두 마리를 동시에 상대","나방은 원거리 마법·독, 전갈은 근접 압박","출혈도 잘 통하는 편"],
+  prep:["화염 속성 무기/주문, 화염 기름·항아리","마력 경감, 독 대비(해독 아이템)"],
+  night1:["문드러진 나무령","용철 데몬","전장의 노장","지네 데몬","티비아의 배"], night2:["대토룡","용의 트리 가드 & 도읍 기병","녹스의 용인병"],
+  only:["대토룡"]},
+ {id:"maris", exp:"징조", name:"심해의 밤 마리스", diff:2,
+  weak:["벼락"], res:[], atk:["수면"],
+  feat:["광역 수면 주문을 쓸 때 벼락 공격을 조금만 넣어도 자세가 무너지며 캔슬됨","자주 떠다니고 가만히 있지 않음 → 원거리 공격이 유리"],
+  prep:["벼락 무기/주문, 벼락 기름·항아리","원거리 무기(활·주문) 하나 챙기기","수면 내성 패시브"],
+  night1:["영웅의 가고일","지렁이 얼굴","탐식의 드래곤","용철 데몬","접목의 군주"], night2:["트리 가드 & 도읍 기병","내리는 별의 짐승 성체","신의 살갗의 귀인 & 사도"],
+  only:["내리는 별의 짐승 성체"]},
+ {id:"libra", exp:"조율의 마물", name:"밤의 악마 리브라", diff:5,
+  weak:["발광","신성","화염"], res:["마력","수면(면역)"], atk:["신성","발광"],
+  feat:[
+   "전투 전 <b>저울 든 상인</b>과 '거래'를 고름 (거절도 가능)",
+   "주문이 떨어진 자리에 <b>노란 알갱이(가짜 황금)</b>가 생김 → 주우면 발광 게이지 감소. 공략의 핵심",
+   "체력 30%쯤에서 <b>명상</b>: 주변 마법진을 전부 부수거나 강한 경직을 주면 '광폭 태세', 못 부수면 더 위험한 '황금 태세'",
+   "발광에 걸리면 괴로워하며 딜 타임 발생 (약점)",
+   "마법진 깔아두기 + 근접 공격이 겹쳐 맞는 게 주 사망 원인"],
+  prep:["신성 또는 화염 무기 (발광 무기는 구하기 어려움)","'미친 불' 이벤트가 뜨면 꼭 진행 → 발광 무기·성인 보상","발광 내성 패시브"],
+  deal:["무난: '상태 이상에 강해지고 싶다' — 모든 상태이상 내성 크게 증가, 스태미나 소폭 감소","함정: '온 힘을 다해 싸우고 싶다' — 리브라가 바로 강화 태세로 시작","주의: '비약적으로 레벨업' — 성배병 마실 때마다 레벨 하락"],
+  night1:["공작의 프레이자","전장의 노장","지네 데몬","티비아의 배","왕족의 망령"], night2:["도가니의 기사 & 황금 하마","신의 살갗의 귀인 & 사도","죽음 의례의 새"],
+  only:["죽음 의례의 새"]},
+ {id:"fulghor", exp:"어둠을 달리는 사냥꾼", name:"야광의 기사 풀고르", diff:3,
+  weak:["벼락"], res:["신성"], atk:["신성"],
+  feat:[
+   "몸을 돌린 뒤 <b>황금 에너지 충전</b> → 이때 벼락 공격을 넣으면 캔슬 + 지속 피해 + 그로기 (최고의 딜 타이밍)",
+   "벼락이 없으면 차지 강공 등 강한 경직으로도 끊을 수 있음",
+   "충전 중에 때리면 황금 고리가 씌워져 이동이 느려짐 → 벼락/강한 경직으로 끊으면 해제",
+   "필살기: 필드를 질주하며 3번 돌진 + 지나간 자리 <b>황금 균열 폭발</b> (점프로 못 피함 → 범위 밖으로)",
+   "체력 50%에서 2페이즈: 왼쪽에 괴물 손 생성. 손 휩쓸기 연타는 전진성이 매우 높아 가장 위험"],
+  prep:["벼락 기름·벼락 항아리 <b>넉넉히</b> — 이것만으로 난이도 절반","신성 경감 패시브 + 물리 경감"],
+  night1:["밤의 기병 2기","지렁이 얼굴","지네 데몬","티비아의 배","왕족의 망령","탐식의 드래곤"], night2:["벽지의 노장","녹스의 용인병","이름 없는 왕"],
+  only:["이름 없는 왕"]},
+ {id:"caligo", exp:"안개의 틈새", name:"밤의 안개 칼리고", diff:4,
+  weak:["화염","타격"], res:[], atk:["마력","동상"],
+  feat:["화염으로 계속 공격하면 패턴이 캔슬되고 휘청이며 공격·방어 디버프","냉기(동상) 브레스·광역기 위주","타격 무기도 잘 통함 — 화염 + 타격 조합 추천"],
+  prep:["화염 무기 필수급 (최소 화염 기름이라도)","동상 내성 / 마력 경감 패시브"],
+  night1:["공작의 프레이자","문드러진 나무령","용철 데몬","접목의 군주","티비아의 배"], night2:["용의 트리 가드 & 도읍 기병","신의 살갗의 귀인 & 사도","차가운 골짜기의 무희"],
+  only:["차가운 골짜기의 무희"]},
+ {id:"nameless", exp:"밤을 본뜬 자 (최종)", name:"밤의 왕 나멜레스", diff:4,
+  weak:["신성"], res:[], atk:["무작위 속성"],
+  feat:[
+   "최종 보스. 다른 밤의 왕들을 쓰러뜨리면 도전 가능",
+   "1페이즈 '밤의 윤곽': 크게 위협적이진 않음. 강한 <b>찌르기</b>만 조심",
+   "2페이즈 '나멜레스': <b>공간 가르기</b>로 7속성 중 하나를 무작위로 무기에 부여 → 특정 속성 경감보다 <b>물리 경감</b> 추천",
+   "공간 가르기(속성 부여): 떠올랐다 떨어진 <b>뒤</b> 충격파가 터짐 → 뒤로 달려서 범위 보고 회피",
+   "찌르기 후 폭발: 찌르기에 맞았으면 바로 일어나지 말고 누워서 폭발 넘기기",
+   "신성으로 때리면 조금씩 주춤해 틈이 늘어남. 맷집은 최종보스치고 약한 편"],
+  prep:["신성 무기","물리 경감 패시브"],
+  night1:["전체 밤 보스 중 무작위"], night2:["전체 밤 보스 중 무작위"], only:[]},
+];
+
+/* 밤 보스 팁 (확실한 것 위주) */
+const NB_TIPS = {
+ "아인 여왕 & 아인 검성":"두 마리 동시전. 한쪽에 집중해서 빨리 수를 줄이기",
+ "방울 사냥꾼":"순간이동 후 추격해오는 타입. 연타가 길어 섣불리 구르지 말고 끝까지 보고 회피",
+ "끔찍한 흉조":"큰 무기를 휘두르는 인간형. 빛의 무기 투척 등 원거리 견제 주의",
+ "트리 가드 & 도읍 기병":"기병 두 명 이상 동시전. 말 탄 적은 말 쪽을 치면 떨어뜨릴 수 있음",
+ "공작의 프레이자":"거대 거미. 주변 잡몹을 광역기로 정리하면서 싸우기",
+ "밤의 기병 2기":"기마 2기. 말을 공격해 낙마시키면 큰 딜 타임",
+ "영웅의 가고일":"날아다니는 가고일. 도약 공격 착지 후가 딜 타이밍",
+ "지렁이 얼굴":"<b>죽음 안개</b>에 오래 있으면 즉사 게이지가 쌓임 — 안개 뿜으면 무조건 멀리",
+ "탐식의 드래곤":"부패 브레스를 바닥에 뿜기 시작하면 멀리 도망 (최대 체력 감소). 몸이 커서 광역기가 잘 맞음",
+ "고룡":"하늘에서 벼락을 떨어뜨리는 고룡. 벼락 경감이 있으면 크게 편해짐",
+ "도가니의 기사 & 황금 하마":"2마리 동시전. 도가니의 기사는 패턴 딜레이가 길어 조급하게 굴면 맞음",
+ "벽지의 노장":"냉기·벼락을 쓰는 노장. 소환물부터 정리",
+ "문드러진 나무령":"<b>화염 약점</b>. 몸 전체로 휩쓰는 공격 범위가 넓음",
+ "용철 데몬":"근접 연타가 강함. 뒤나 측면 잡기",
+ "전장의 노장":"붉은 부패를 쓰는 노장. 부패 장판·소환물 주의, 해독(부패) 아이템 준비",
+ "지네 데몬":"꼬리·팔을 자를 수 있지만 잘린 부위가 따로 적이 됨. 점프 공격은 뒤로 빠지기",
+ "티비아의 배":"주변 <b>언데드 잡몹부터</b> 처리 후 본체",
+ "대토룡":"용암을 쓰는 거대 토룡. 용암 장판 피하고 옆구리 공략",
+ "용의 트리 가드 & 도읍 기병":"트리 가드는 벼락·화염을 씀. 기병부터 빠르게 정리",
+ "녹스의 용인병":"거대한 체구의 돌격형. 돌진 후 딜 타이밍",
+ "접목의 군주":"여러 팔로 휘두르는 연속 공격. 거리 두고 끝까지 보기",
+ "내리는 별의 짐승 성체":"중력 마법·돌진. 뿔 쪽 정면 피하기",
+ "신의 살갗의 귀인 & 사도":"2마리 동시전. 원작처럼 한쪽만 쓰러뜨리면 다시 일어날 수 있으니 체력을 비슷하게 깎아 몰아서 처리",
+ "왕족의 망령":"<b>신성 약점</b>. 주변에 독 오라 → 해독 아이템 준비",
+ "죽음 의례의 새":"<b>신성 약점</b>. 죽음 속성 공격 조심",
+ "이름 없는 왕":"창 찌르기는 옆으로 회피. 팔을 치켜들면 낙뢰 → 이동",
+ "차가운 골짜기의 무희":"공격 박자를 일부러 늦게 치는 엇박 패턴. 너무 빨리 구르지 말기",
+};
+
+/* 캐릭터 (본편 8인) */
+const CHARS = [
+ {name:"추적자", role:"근접 올라운더 · 입문 추천", stat:"근력·기량 균형",
+  kit:["스킬: <b>갈고리</b>로 적에게 날아가거나 적을 끌어당김 — 빠른 적 추격, 회피 후 재진입에 필수","아츠: 강력한 돌진 폭발 공격","쓰러질 상황에서 한 번 버티는 생존 능력 보유 (단, 발광 등 상태이상 사망은 제외)"],
+  tip:["어떤 근접 무기든 잘 어울림 → 약점 속성 무기를 가리지 말고 줍기","딜은 충분하니 생존에 신경. 한두 대씩 꾸준히 치기"]},
+ {name:"수호자", role:"탱커 · 방패", stat:"생명력 높음",
+  kit:["방패 막기(하이 가드)로 대부분의 공격을 버팀","아츠로 보스 패턴을 끊거나 아군을 보호할 수 있음 (리브라 명상 캔슬 가능)","가드 카운터가 주 공격 수단"],
+  tip:["생명력·스태미나 옵션 챙기기","보스 공격 속성의 경감률을 챙기면 탱킹 난이도가 크게 내려감","딜이 약한 편 → 어그로 끌어 팀원 딜 시간 만들기"]},
+ {name:"철의 눈", role:"원거리 · 활", stat:"기량 높음",
+  kit:["활 주력의 원거리 딜러","스킬로 적에게 표식을 남겨 받는 피해 증가","아츠: 관통하는 강력한 조준 사격 — 리브라 명상 보호막, 공중 마법진 파괴에 탁월"],
+  tip:["속성 활이 안 나올 수 있으니 기본 활 강화로 저점 확보","떠다니는 보스(마리스 등)에 특히 유리"]},
+ {name:"레이디", role:"단검 · 회피 · 서포트", stat:"기량·지력",
+  kit:["빠른 단검 연타와 뛰어난 회피","아츠: 아군 전체를 <b>투명화</b> → 어그로 해제, 부활·재정비 시간 확보","원거리 지팡이 운용도 가능"],
+  tip:["딜 욕심만 안 내면 장판·지진 회피가 쉬워 초중급자도 무난","팀이 위기일 때 아츠로 부활 타이밍 만들기"]},
+ {name:"무뢰한", role:"특대 무기 · 맞딜", stat:"근력·생명력 높음",
+  kit:["특대형 무기로 강한 경직을 줌","스킬: 맞으면서 버티다 강화 반격 (슈퍼아머)","아츠: 기둥(토템) 지형을 세워 적을 가두고 공격"],
+  tip:["풀고르 충전 캔슬 같은 '강한 경직' 기믹 담당","선후딜이 길어 보스의 깔아두기 공격에 주의"]},
+ {name:"은둔자", role:"마술사 · 원거리", stat:"지력·신앙",
+  kit:["마술 주력. 스킬로 적의 속성 잔여물을 흡수해 FP 회복·속성 공격","아츠: 적에게 표식 → 맞출수록 아군 회복"],
+  tip:["약점 속성에 맞는 주문 지팡이·성인 찾기","유도성 좋은 주문이 움직이는 보스에 유리 (풀고르 등)"]},
+ {name:"복수자", role:"소환사 · 신앙", stat:"신앙 매우 높음",
+  kit:["영체를 소환해 함께 싸움 (어그로 분산)","아츠: 아군 부활 + 일정 시간 버티기 버프","자체 FP 회복 수단이 부족 → 상점의 FP 회복 아이템 필요"],
+  tip:["신앙 S라 기도(빛고리, 벼락·미친 불 계열)와 상성이 좋음","리브라 상대로 미친 불 기도가 있으면 핵심 딜러"]},
+ {name:"집행자", role:"요도 · 패링", stat:"기량 높음",
+  kit:["요도로 적 공격을 <b>쳐내기(패링)</b> → 성공 시 큰 이득","아츠: 짐승으로 변신해 강력한 공격"],
+  tip:["패턴을 외울수록 강해지는 숙련형","출혈이 잘 통하는 보스에서 강력 (에델레는 출혈 내성 높음 주의)"]},
+];
+
+/* 유물·아이템 */
+const RELIC_BASICS = [
+ {t:"유물이란?", s:"출격 전에 끼우는 영구 강화", b:`
+  <ul>
+   <li>원탁의 <b>유물 의식</b>에서 장착 (지도 메뉴에서 바로 이동 가능)</li>
+   <li>유물을 끼우는 칸 = <b>그릇</b>. 칸마다 <b>빨강·파랑·노랑·초록</b> 색이 있고, 같은 색 유물만 장착 가능</li>
+   <li>그릇의 색 구성은 캐릭터마다 다름 → 새 그릇을 얻으면 선택지가 늘어남</li>
+   <li>유물 크기: <b>소·중·대</b> = 효과 <b>1·2·3개</b></li>
+   <li><b>출격이 시작되면 바꿀 수 없음</b> → 원정(밤의 왕)에 맞춰 미리 세팅</li>
+  </ul>`},
+ {t:"유물 얻는 법", s:"보스 보상 · 뽑기 · 판매", b:`
+  <ul>
+   <li><b>출격 보상</b>: 출격이 끝나면(실패해도) 유물을 받음</li>
+   <li><b>보스 유물</b>: 밤의 왕 첫 격파 시 고유 유물. 일반 유물엔 안 나오는 전용 효과 보유</li>
+   <li><b>풍경의 원석</b>: 원탁 상점에서 <b>머크</b>로 사는 랜덤 유물</li>
+   <li>안 쓰는 유물은 머크로 팔 수 있음 → 다시 원석 구매</li>
+  </ul>`},
+ {t:"알아두면 좋은 숨은 규칙", s:"툴팁만 봐선 모르는 것", b:`
+  <ul>
+   <li><b>출격 시 무기 속성 부여</b>: 무기 공격력 일부를 그 속성으로 바꾸는 방식. 여러 개 끼우면 <b>가장 왼쪽 유물</b>이 우선</li>
+   <li><b>출격 시 아이템 소지</b>: 최대 4칸까지만. 왼쪽 유물의 위쪽 효과부터 순서대로 채워짐</li>
+   <li>같은 효과를 여러 개 끼워도 중첩되지 않는 것이 있으니 서로 다른 효과 위주로</li>
+  </ul>
+  <div class="tip">당분간은 <b>"내 캐릭터 주 능력치 +3" + "원정 약점 대응"</b> 두 가지만 맞춰도 충분해요.</div>`},
+];
+
+const RELIC_GENERAL = [
+ ["출격 시 무기에 상태이상/속성 부여","시작 무기부터 출혈·동상이나 속성이 붙음 → 1일차 파밍 속도가 확 빨라짐. 밤의 왕 약점 속성이면 3일차까지 그대로 활용"],
+ ["성배병 사용 시 주변 아군도 회복","팀 전체가 힐러가 되는 효과. 협동에서 체감이 큼"],
+ ["룬 획득량 증가","레벨 15에 더 빨리 도달. 초보일수록 효과가 큼"],
+ ["주 능력치 +3 (근력·기량·지력·신앙 등)","캐릭터의 S 능력치에 맞춰 끼우면 무난한 공격력 상승"],
+ ["물리 / 속성 공격력 상승","근접은 물리, 캐스터는 해당 속성 상승 위주"],
+ ["캐릭터 스킬 쿨타임 감소 · 아츠 게이지 축적량 증가","스킬·아츠 의존도가 높은 캐릭터(수호자·은둔자·복수자)에 좋음"],
+ ["최대 HP 상승 · 경감률","생존이 어려운 초보에게 가장 확실한 보험"],
+];
+
+const CHAR_BUILDS = [
+ {name:"추적자", stat:"근력 · 기량",
+  relic:["근력 +3 / 기량 +3","물리 공격력 상승","갈고리 스킬 관련 효과(후속 공격 등)","출격 시 무기 상태이상 부여(출혈)"],
+  weapon:"대검·특대 등 근접 무기 전반 — 약점 속성이면 종류 불문",
+  field:["약점 속성 기름 (근접이라 효율이 좋음)","물리 경감 탈리스만"]},
+ {name:"수호자", stat:"근력 · 생명력",
+  relic:["근력 +3","캐릭터 스킬 쿨타임 감소","가드 카운터 강화","보스 유물 '사냥꾼의 밤'(풀고르) — 가드 카운터에 HP 비례 추가 피해"],
+  weapon:"도끼창·창 + 방패. 방패 무기를 여러 개 들면 HP 상승 효과",
+  field:["보스 공격 속성 경감 패시브","생명력·스태미나 상승 패시브"]},
+ {name:"철의 눈", stat:"기량",
+  relic:["기량 +3","공격 적중 시 스태미나 회복","출격 시 무기 상태이상 부여 (활 연사와 궁합이 좋음)","약점 표식 지속시간 증가"],
+  weapon:"활 주력 + 보조로 가벼운 근접 무기. 속성 활이 안 나오면 기본 활 강화",
+  field:["단석(활 강화)","약점 속성 화살/기름"]},
+ {name:"레이디", stat:"기량 · 지력",
+  relic:["기량 +3","아츠 게이지 축적량 증가 (투명화 아츠 자주 쓰기)","출격 시 무기 상태이상 부여 — 단검 연타로 빠르게 누적"],
+  weapon:"단검 주력. 여유가 있으면 지팡이 하나 (원거리 대안)",
+  field:["출혈·동상 무기","회피 관련 패시브"]},
+ {name:"무뢰한", stat:"근력 · 생명력",
+  relic:["지구력 +3 (스태미나)","물리 공격력 상승","양손 공격 시 자세 무너뜨리기 강화","토템(아츠) 버프 지속 증가"],
+  weapon:"특대형 무기 양손 — 강한 경직으로 보스 기믹 끊기 담당",
+  field:["단석(특대 무기 강화)","약점 속성 기름"]},
+ {name:"은둔자", stat:"지력 · 신앙",
+  relic:["지력 +3","마력(마술) 공격력 상승","아츠 게이지 축적량 증가","FP 회복 관련 효과"],
+  weapon:"지팡이 + 성인 하나씩. 약점 속성 주문이 달린 걸 우선",
+  field:["별빛 조각(FP 회복)","유도성 좋은 주문"]},
+ {name:"복수자", stat:"신앙 (매우 높음)",
+  relic:["출격 시 별빛 조각 소지 — FP 회복 수단 부족을 해결 (최우선)","아츠로 소환 가족 강화","신앙 +3"],
+  weapon:"성인(기도) 주력. 빛고리·벼락·미친 불 계열 기도 우선",
+  field:["별빛 조각 추가 구매","보스 약점 속성 기도가 달린 성인"]},
+ {name:"집행자", stat:"기량 · 신비",
+  relic:["기량 +3 / 신비 +3","출격 시 무기에 <b>동상</b> 부여 — 도의 기본 출혈과 이중 상태이상","공격 적중 시 스태미나 회복","가드(쳐내기) 시 HP 회복"],
+  weapon:"도(카타나) 주력. 패링 연습이 곧 딜",
+  field:["출혈·동상 무기","에델레전은 독 무기 따로 챙기기 (출혈 내성 높음)"]},
+];
+
+const BOSS_RELICS = [
+ ["사냥꾼의 밤","풀고르","녹색","최대 스태미나 상승 · 가드 카운터에 HP 비례 추가 피해 · 관통 카운터 시 HP 회복 → <b>수호자</b>와 궁합"],
+ ["악마의 밤","리브라","적색","출격 중 상점 가격 대폭 할인 (나머지 두 효과는 실전 효용 낮음)"],
+ ["왕의 밤","나멜레스","—","무기 교체 시 무작위 속성 부여 · 속성 공격력 10% 상승 · 물리 공격력 10% 상승 → 범용 딜 유물"],
+];
+
+const FIELD_ITEMS = [
+ ["무기 등급","회색 → 파랑 → 보라 → 금색(전설) 순으로 강함. 같은 무기라도 붙은 <b>패시브</b>가 다름"],
+ ["추천 캐릭터 표시","무기 설명에 뜨는 캐릭터 아이콘 = 그 캐릭터 능력치에 맞는 무기. 줍기 전에 확인"],
+ ["기름","무기에 잠시 속성 부여. 약점 무기가 없을 때의 대체재이자 <b>기믹 파훼용</b> (풀고르 → 벼락 기름)"],
+ ["항아리","던지는 속성 공격. 원거리로 약점 기믹을 끊을 때 유용"],
+ ["별빛 조각","FP 회복. 캐스터·복수자 필수품"],
+ ["단석","갱도에서 획득. 무기 강화로 저점 확보 (특히 철의 눈 기본 활)"],
+ ["해독·부패 치료 아이템","독·붉은 부패를 쓰는 보스(그노스터, 전장의 노장, 왕족의 망령) 대비"],
+];
+
+/* 속성·상태이상 */
+const DMG = [
+ ["물리","표준·타격·참격·관통. 보스마다 조금씩 내성이 다름 (칼리고는 타격에 약함)"],
+ ["마력","지력 계열 마술·마력 무기. 마력에 강한 밤의 왕이 여럿이라 범용성은 낮은 편"],
+ ["화염","가장 흔하게 구하는 속성 중 하나. 그노스터·칼리고 약점, 리브라에도 유효"],
+ ["벼락","풀고르·마리스 약점. 벼락 기름·항아리로도 기믹 파훼 가능"],
+ ["신성","글라디우스·나멜레스(최종) 약점, 리브라에도 유효. 가장 범용적인 약점 속성"],
+];
+const STATUS = [
+ ["독","천천히 체력을 깎는 지속 피해","에델레 약점"],
+ ["붉은 부패","독보다 강한 지속 피해","에델레에게도 잘 통함"],
+ ["출혈","게이지가 차면 최대 체력 비례로 큰 피해 한 방","에델레는 출혈 내성 매우 높음"],
+ ["동상","체력 비례 피해 + 한동안 받는 피해 증가","칼리고가 거는 상태이상"],
+ ["수면","잠들어 무방비 상태","마리스가 거는 상태이상 · 리브라는 면역"],
+ ["발광","대상에게 피해·경직. 보통 적은 면역","리브라 약점이자 리브라가 거는 상태이상"],
+ ["죽음","게이지가 차면 즉사","지렁이 얼굴의 안개 주의"],
+];
+
+/* ================= 렌더링 ================= */
+const $ = s => document.querySelector(s);
+const stars = n => `<span class="stars">${'★'.repeat(n)}${'☆'.repeat(5-n)}</span>`;
+const li = arr => `<ul>${arr.map(x=>`<li>${x}</li>`).join('')}</ul>`;
+const mk = (title, sub, body, attrs='') =>
+ `<details class="card" ${attrs}><summary><div class="sum-main"><div class="sum-title">${title}</div>${sub?`<div class="sum-sub">${sub}</div>`:''}</div><span class="chev">›</span></summary><div class="body">${body}</div></details>`;
+
+function memoBox(key){
+  let v=''; try{v=localStorage.getItem('memo_'+key)||''}catch(e){}
+  return `<div class="memo-label">📝 내 메모 (이 기기에 저장)</div>
+  <textarea class="memo" data-key="${key}" placeholder="예: 벼락 항아리 5개면 충분했음">${v.replace(/</g,'&lt;')}</textarea>`;
+}
+
+function renderGuide(){
+  $('#tab-guide').innerHTML = `<div class="sec-title">초보 가이드</div>` +
+   GUIDE.map((g,i)=>mk(g.t,g.s,g.b, i===0?'open':'')).join('');
+}
+function lordCard(L){
+  const nbs = (arr)=> `<div class="nb-list">${arr.map(n=>`<span class="nb ${L.only.includes(n)?'only':''}">${n}</span>`).join('')}</div>`;
+  const chips = `<div class="chips">${L.weak.map(w=>chip(w,'weak')).join('')}${L.res.map(r=>chip(r,'res')).join('')}</div>`;
+  const body = `
+   <h4>공격 속성</h4><div class="chips">${L.atk.map(a=>chip(a)).join('')}</div>
+   <h4>특징 · 패턴</h4>${li(L.feat)}
+   <h4>준비물</h4>${li(L.prep)}
+   ${L.deal?`<h4>거래 선택 참고</h4>${li(L.deal)}`:''}
+   <h4>1일차 밤 보스 후보</h4>${nbs(L.night1)}
+   <h4>2일차 밤 보스 후보</h4>${nbs(L.night2)}
+   ${L.only.length?`<p class="sum-sub">금색 테두리 = 이 원정에서만 나오는 밤 보스</p>`:''}
+   ${memoBox(L.id)}`;
+  return `<details class="card" data-id="${L.id}"><summary><div class="sum-main">
+    <div class="sum-title">${L.name}</div>
+    <div class="sum-sub">원정: ${L.exp} · 체감 난이도 ${stars(L.diff)}</div>${chips}
+   </div><span class="chev">›</span></summary><div class="body">${body}</div></details>`;
+}
+function renderLords(){
+  $('#tab-lords').innerHTML = `<div class="sec-title">밤의 왕 8종</div>
+   <div class="tip">약점 속성 판정은 <b>맞았을 때 뜨는 속성 이펙트</b> 기준이라, 약점 외 다른 인챈트가 섞이면 기믹이 안 터질 수 있어요.</div>` +
+   LORDS.map(lordCard).join('') +
+   `<p class="sum-sub">체감 난이도는 커뮤니티 평가를 참고한 대략적인 값이에요.</p>`;
+}
+function renderNight(){
+  // 밤 보스 → 등장 원정 역인덱스
+  const map = {};
+  LORDS.filter(L=>L.id!=='nameless').forEach(L=>{
+    [...L.night1.map(n=>[n,1]),...L.night2.map(n=>[n,2])].forEach(([n,d])=>{
+      map[n] = map[n] || {d, lords:[]}; map[n].lords.push(L.exp);
+    });
+  });
+  const block = d => Object.entries(map).filter(([,v])=>v.d===d).map(([n,v])=>
+    mk(n, `등장: ${v.lords.join(', ')}`, `<p>${NB_TIPS[n]||'특별한 기믹 정보 없음 — 기본 패턴 파악 위주'}</p>`)).join('');
+  $('#tab-night').innerHTML =
+   `<div class="sec-title">1일차 밤 보스</div>
+    <div class="tip">밤 보스는 <b>어떤 밤의 왕을 골랐는지</b>에 따라 후보가 정해져요. 최종 보스(밤을 본뜬 자) 출격에선 전부 나올 수 있어요.</div>` +
+   block(1) + `<div class="sec-title">2일차 밤 보스</div>` + block(2);
+}
+function renderChars(){
+  $('#tab-chars').innerHTML = `<div class="sec-title">캐릭터 (밤을 건너는 자) · 본편 8인</div>` +
+   CHARS.map(c=>mk(c.name, `${c.role} · ${c.stat}`, `<h4>능력</h4>${li(c.kit)}<h4>운용 팁</h4>${li(c.tip)}`)).join('');
+}
+function renderStatus(){
+  const weakBy = el => LORDS.filter(L=>L.weak.includes(el)).map(L=>L.name.split(' ').pop()).join(', ') || '—';
+  $('#tab-status').innerHTML = `
+   <div class="sec-title">속성별 약점 보스 빠른 찾기</div>
+   <div class="card" style="padding:4px 12px"><table>
+    <tr><th>속성</th><th>약점인 밤의 왕</th></tr>
+    ${["신성","화염","벼락","독","발광","타격"].map(e=>`<tr><td>${chip(e)}</td><td>${weakBy(e)}</td></tr>`).join('')}
+   </table></div>
+   <div class="sec-title">공격 속성</div>
+   <div class="card" style="padding:4px 12px"><table>
+    ${DMG.map(([k,v])=>`<tr><td style="width:64px">${chip(k)}</td><td>${v}</td></tr>`).join('')}
+   </table></div>
+   <div class="sec-title">상태이상</div>
+   <div class="card" style="padding:4px 12px"><table>
+    <tr><th>종류</th><th>효과</th><th>관련 보스</th></tr>
+    ${STATUS.map(([k,v,b])=>`<tr><td>${chip(k)}</td><td>${v}</td><td class="sum-sub">${b}</td></tr>`).join('')}
+   </table></div>
+   <div class="tip">출혈·동상처럼 <b>체력 비례 피해</b>는 3인 플레이에서 효율이 낮아져요(약 0.7배). 독·부패는 영향이 없어요.</div>`;
+}
+
+function renderItems(){
+  const tbl = rows => `<div class="card" style="padding:4px 12px"><table>${rows}</table></div>`;
+  $('#tab-items').innerHTML =
+   `<div class="sec-title">유물 기초</div>` +
+   RELIC_BASICS.map(r=>mk(r.t,r.s,r.b)).join('') +
+   `<div class="sec-title">누구에게나 좋은 유물 효과</div>` +
+   tbl(RELIC_GENERAL.map(([k,v])=>`<tr><td style="width:40%"><b>${k}</b></td><td>${v}</td></tr>`).join('')) +
+   `<div class="sec-title">캐릭터별 추천 세팅</div>` +
+   CHAR_BUILDS.map(c=>mk(c.name, `주 능력치: ${c.stat}`,
+     `<h4>추천 유물 효과</h4>${li(c.relic)}<h4>무기</h4><p>${c.weapon}</p><h4>필드에서 챙길 것</h4>${li(c.field)}`)).join('') +
+   `<div class="sec-title">보스 유물 (밤의 왕 격파 보상)</div>` +
+   tbl(`<tr><th>유물</th><th>효과</th></tr>` + BOSS_RELICS.map(([n,b,c,e])=>
+     `<tr><td><b>${n}</b><div class="sum-sub">${b} · ${c}</div></td><td>${e}</td></tr>`).join('')) +
+   `<div class="sec-title">필드 아이템 · 무기 고르기</div>` +
+   tbl(FIELD_ITEMS.map(([k,v])=>`<tr><td style="width:30%"><b>${k}</b></td><td>${v}</td></tr>`).join('')) +
+   `<div class="tip">유물 효과 이름은 게임 속 표기와 조금 다를 수 있어요. 비슷한 문구를 찾으면 됩니다.</div>`;
+}
+
+/* ================= 탭 · 검색 ================= */
+let current='guide';
+function show(tab){
+  current=tab;
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
+  ['guide','lords','night','chars','items','status'].forEach(t=>$('#tab-'+t).classList.toggle('hidden',t!==tab));
+  $('#search-results').classList.add('hidden'); $('#search').value='';
+  try{localStorage.setItem('tab',tab)}catch(e){}
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>show(b.dataset.tab)));
+
+$('#search').addEventListener('input',e=>{
+  const q=e.target.value.trim();
+  const res=$('#search-results');
+  if(!q){ res.classList.add('hidden'); $('#tab-'+current).classList.remove('hidden'); return; }
+  $('#tab-'+current).classList.add('hidden');
+  const hits=[];
+  document.querySelectorAll('main section details').forEach(d=>{
+    const c=d.cloneNode(true);
+    c.querySelectorAll('.memo,.memo-label').forEach(m=>m.remove());
+    if(c.textContent.includes(q)) hits.push(c.outerHTML);
+  });
+  const esc=q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  res.innerHTML = `<div class="sec-title">"${q.replace(/</g,'&lt;')}" 검색 결과 ${hits.length}건</div>` +
+    (hits.length ? hits.map(h=>h.replace(/<details/,'<details open')
+      .replace(new RegExp(`(>[^<]*?)(${esc})`,'g'),'$1<mark>$2</mark>')).join('')
+     : `<div class="empty">결과가 없어요</div>`);
+  res.classList.remove('hidden');
+});
+
+document.addEventListener('input',e=>{
+  if(e.target.classList.contains('memo')){
+    const k=e.target.dataset.key;
+    try{localStorage.setItem('memo_'+k,e.target.value)}catch(err){}
+    document.querySelectorAll(`.memo[data-key="${k}"]`).forEach(m=>{ if(m!==e.target) m.value=e.target.value; });
+  }
+});
+
+renderGuide(); renderLords(); renderNight(); renderChars(); renderItems(); renderStatus();
+let saved='guide'; try{saved=localStorage.getItem('tab')||'guide'}catch(e){}
+show(saved);
+</script>
+</body>
+</html>
